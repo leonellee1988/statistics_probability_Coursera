@@ -1,0 +1,265 @@
+---
+title: "Actividad final curso: Estadística y Probabilidad"
+author: "Edwin Leonel Lee Tiño"
+date: "2023-10-05"
+output: html_document
+---
+
+```{r Instalar librerias, include=FALSE}
+
+install.packages("tidyverse")
+install.packages("vcd", dependencies = TRUE)
+install.packages("DescTools", dependencies = TRUE)
+
+```
+
+```{r Cargar librerias, include=FALSE}
+
+library(tidyverse)
+library(DescTools)
+library(vcd)
+
+```
+
+# (0) Resumen del dataset (10 primeras filas).
+
+```{r Cargar dataset, echo=FALSE}
+
+combo_hamburguer_dataset = read_csv("combo_hamburguer.csv")
+combo_hamburguer_tibble = tibble(combo_hamburguer_dataset)
+head(combo_hamburguer_tibble, 10)
+
+```
+
+# (1) Descripción del comportamiento variable: Carne (gramos).
+
+## (1.1) Medidas de tendencia central.
+
+```{r Medidas de tendencia central variable: Carne (gramos), echo=FALSE}
+
+media_carne = mean(combo_hamburguer_tibble$Carne)
+mediana_carne = median(combo_hamburguer_tibble$Carne)
+
+cat("El valor promedio para la variable carne es: ", media_carne, " gramos. \n")
+cat("No más del 50% de las observaciones es mayor que ", mediana_carne, "gramos. \n")
+
+```
+
+## (1.2) Medidas de posición.
+
+```{r Medidas de posición variable: Carne (gramos), echo=FALSE}
+
+quantile_1_carne = quantile(combo_hamburguer_tibble$Carne, probs = 0.25)
+quantile_3_carne = quantile(combo_hamburguer_tibble$Carne, probs = 0.75)
+
+cat("El 25% de las observaciones no es mayor que ", quantile_1_carne, " gramos. \n")
+cat("El 75% de las observaciones no es mayor que ", quantile_3_carne, " gramos. \n")
+
+```
+
+## (1.3) Medidas de variación.
+
+```{r Medidas de variación variable: Carne (gramos), echo=FALSE}
+
+varianza_carne = var(combo_hamburguer_tibble$Carne)
+desv_est_carne = sqrt(varianza_carne)
+amplitud_carne = max(combo_hamburguer_tibble$Carne) - min(combo_hamburguer_tibble$Carne)
+
+cat("La varianza para la variable carne es: ", varianza_carne, " gramos. \n")
+cat("Las observaciones tienen una variación promedio de ", desv_est_carne, " gramos, en relación a la media. \n")
+cat("La diferencia entre la observación mayor y la menor de la variable carne es: ", amplitud_carne, " gramos. \n")
+
+```
+
+## (1.4) Distribución de datos.
+
+### (a) Histograma y polígono de frecuencias.
+
+```{r Histograma y poligono de frecuencias variable: Carne (gramos), echo=FALSE, warning=FALSE}
+
+n_clases_carne = nclass.Sturges(combo_hamburguer_tibble$Carne)
+
+ggplot(combo_hamburguer_tibble, aes(x = Carne))+ 
+  geom_histogram(bins=n_clases_carne, color="#17202A", fill="#922B21")+
+  geom_freqpoly(bins=n_clases_carne, color="#F1C40F")+
+  labs(title="Distribución variable: Carne (gramos).", x="peso (gramos)", y="frecuencia") +
+  theme_bw()
+
+```
+
+### (b) Diagrama de caja y bigotes.
+
+```{r Boxplot variable: Carne (gramos), echo=FALSE, warning=FALSE}
+
+ggplot(combo_hamburguer_tibble, aes(x = Carne)) + 
+  geom_boxplot(bins=n_clases_carne, color="#17202A", fill="#922B21") +
+  labs(title="Diagrama caja y bigote variable: Carne (gramos)", x="peso (gramos)") +
+  theme_bw()
+
+```
+
+# (2) Descripción del comportamiento variable: Salsa (gramos).
+
+## (2.1) Medidas de tendencia central.
+
+```{r Medidas de tendencia central variable: Salsa (gramos), echo=FALSE}
+
+media_salsa = mean(combo_hamburguer_tibble$Salsa)
+mediana_salsa = median(combo_hamburguer_tibble$Salsa)
+
+cat("El valor promedio para la variable salsa es: ", media_salsa, " gramos. \n")
+cat("No más del 50% de las observaciones es mayor que ", mediana_salsa, "gramos. \n")
+
+```
+
+## (2.2) Medidas de posición.
+
+```{r Medidas de posición variable: Salsa (gramos), echo=FALSE}
+
+quantile_1_salsa = quantile(combo_hamburguer_tibble$Salsa, probs = 0.25)
+quantile_3_salsa = quantile(combo_hamburguer_tibble$Salsa, probs = 0.75)
+
+cat("El 25% de las observaciones no es mayor que ", quantile_1_salsa, " gramos. \n")
+cat("El 75% de las observaciones no es mayor que ", quantile_3_salsa, " gramos. \n")
+
+```
+
+## (2.3) Medidas de variación.
+
+```{r Medidas de variación variable: Salsa (gramos), echo=FALSE}
+
+varianza_salsa = var(combo_hamburguer_tibble$Salsa)
+desv_est_salsa = sqrt(varianza_salsa)
+amplitud_salsa = max(combo_hamburguer_tibble$Salsa) - min(combo_hamburguer_tibble$Salsa)
+
+cat("La varianza para la variable salsa es: ", varianza_salsa, " gramos. \n")
+cat("Las observaciones tienen una variación promedio de ", desv_est_salsa, " gramos, en relación a la media. \n")
+cat("La diferencia entre la observación mayor y la menor de la variable salsa es: ", amplitud_salsa, " gramos. \n")
+
+```
+
+## (2.4) Distribución de datos.
+
+### (a) Histograma y polígono de frecuencias.
+
+```{r Histograma y poligono de frecuencias variable: Salsa (gramos), echo=FALSE, warning=FALSE}
+
+n_clases_salsa = nclass.Sturges(combo_hamburguer_tibble$Salsa)
+
+ggplot(combo_hamburguer_tibble, aes(x = Salsa))+ 
+  geom_histogram(bins=n_clases_salsa, color="#17202A", fill="#76448A")+
+  geom_freqpoly(bins=n_clases_salsa, color="#F1C40F")+
+  labs(title="Distribución variable: Salsa (gramos).", x="peso (gramos)", y="frecuencia") +
+  theme_bw()
+
+```
+
+## (b) Diagrama de caja y bigotes.
+
+```{r Boxplot variable: Salsa (gramos), echo=FALSE, warning=FALSE}
+
+ggplot(combo_hamburguer_tibble, aes(x = Salsa)) + 
+  geom_boxplot(bins=n_clases_carne, color="#17202A", fill="#76448A") +
+  labs(title="Diagrama caja y bigote variable: Salsa (gramos)", x="peso (gramos)") +
+  theme_bw()
+
+```
+
+# (3) Descripción del comportamiento variable: Refresco.
+
+## (3.1) Gráfica de barras.
+
+```{r Gráfica de barras variable: refresco (tamaño), echo=FALSE, warning=FALSE}
+
+ggplot(combo_hamburguer_tibble, aes(x = Refresco)) +
+  geom_bar(color="#17202A", fill="#3498DB") +
+  labs(title="Compra de refrescos por tamaño.", x="tamaño", y="frequencia") +
+  theme_bw() 
+
+```
+
+# (4) Descripción del comportamiento variable: Papas.
+
+## (4.1) Gráfica de barras.
+
+```{r Gráfica de barras variable: papas (tamaño), echo=FALSE, warning=FALSE}
+
+ggplot(combo_hamburguer_tibble, aes(x = Papas)) +
+  geom_bar(color="#17202A", fill="#229954") +
+  labs(title="Compra de papas por tamaño.", x="tamaño", y="frequencia") +
+  theme_bw() 
+
+```
+
+# (5) Descripción del comportamiento conjunto variables: Carne y Salsa.
+
+## (5.1) Diagrama de dispersión: Carne (x) vs Salsa (y).
+
+```{r Diagrama de dispersión variables: Carne y Salsa, echo=FALSE, warning=FALSE}
+
+ggplot(combo_hamburguer_tibble, aes(x = Carne, y = Salsa)) + 
+  geom_point(color="#CA6F1E", size=2) +
+  geom_smooth(method="lm", se=FALSE) +
+  labs(title="Combo Hamburguer: Carne vs Salsa.", x = "carne (gramos)", y = "salsa (gramos)")
+
+```
+
+## (5.2) Ecuación de la gráfica de dispersión (modelo matemático).
+
+```{r Tabla ecuación variables: Carne vs Salsa, echo=FALSE}
+
+combo_hamburguer_tibble = combo_hamburguer_tibble %>% 
+  mutate(
+    carne_mult_salsa = Carne * Salsa,
+    carne_cuadrado = Carne * Carne,
+    salsa_cuadrado = Salsa * Salsa
+  )
+
+combo_hamburguer_tibble
+
+```
+
+```{r Ecuación variables: Carne vs Salsa, echo=FALSE}
+
+sum_carne = sum(combo_hamburguer_tibble$Carne)
+sum_salsa = sum(combo_hamburguer_tibble$Salsa)
+sum_carne_mult_salsa= sum(combo_hamburguer_tibble$carne_mult_salsa)
+sum_carne_cuadrado = sum(combo_hamburguer_tibble$carne_cuadrado)
+sum_salsa_cuadrado = sum(combo_hamburguer_tibble$salsa_cuadrado)
+num_rows = nrow(combo_hamburguer_tibble)
+
+A = matrix(c(num_rows,sum_carne,sum_carne,sum_carne_cuadrado), nrow=2)
+B = c(sum_salsa,sum_carne_mult_salsa)
+solution = solve(A, B)
+
+cat("El modelo matemático para las variables Carne y Salsa es: y = ",solution[2],"x",solution[1])
+
+```
+
+## (5.3) Coeficiente correlación.
+
+```{r Coeficiente correlación variables: Carne vs Salsa, echo=FALSE}
+
+coef_corr = cor(combo_hamburguer_tibble$Carne, combo_hamburguer_tibble$Salsa)
+cat("El coeficiente de correlación para las variables: Carne vs Salsa es: ", coef_corr)
+
+```
+
+# (6) Descripción del comportamiento conjunto variables: Refresco vs Papas.
+
+## (6.1) Tabla de doble entrada variables: Refresco vs Papas.
+
+```{r Tabla de doble entrada variables: Refresco vs Papas, echo=FALSE}
+
+tabla_relac = table(combo_hamburguer_tibble$Refresco, combo_hamburguer_tibble$Papas)
+addmargins(tabla_relac)
+
+```
+
+## (6.2) Gráfica de mosaico variables: Refresco vs Papas.
+
+```{r Gráfica de mosaico variables: Refresco vs Papas, echo=FALSE}
+
+mosaic(Refresco~Papas, combo_hamburguer_tibble)
+
+```
